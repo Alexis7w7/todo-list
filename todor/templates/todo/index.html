@@ -1,0 +1,50 @@
+{% extends 'base.html'%} {% block content %}
+<section class="container-fluid">
+  <nav class="">
+    <h1>{% block title %} Task List {% endblock %}</h1>
+    <a href="{{url_for('todo.create')}}" class="btn btn-success">New</a>
+  </nav>
+  <table class="table">
+    <thead>
+      <tr>
+        <th class="col">Taks</th>
+        <th class="col">State</th>
+        <th class="col" colspan="2">Options</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      {% for todo in todos | reverse %} {% if g.user.id == todo.created_by %}
+      <tr>
+        <td>
+          <h5>{{todo.title}}</h5>
+          <p>{{todo.desc}}</p>
+        </td>
+        <td>
+          {% if todo.state == false %}
+          <span class="text-warning"> Uncompleted </span>
+          {% else %}
+          <span class="text-success"> Completed</span>
+          {% endif %}
+        </td>
+        <td>
+          <a
+            href="{{ url_for('todo.update', id=todo.id)}}"
+            class="btn btn-info btn-sm"
+            >Edit</a
+          >
+        </td>
+        <td>
+          <a
+            href="{{ url_for('todo.delete', id=todo.id)}}"
+            class="btn btn-danger btn-sm"
+            >Delete</a
+          >
+        </td>
+      </tr>
+      {% endif %} {% endfor %}
+    </tbody>
+  </table>
+</section>
+
+{% endblock %}
